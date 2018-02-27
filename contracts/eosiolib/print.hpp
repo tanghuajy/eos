@@ -11,7 +11,9 @@
 
 namespace eosio {
 
+   #ifndef EOSIO_NATIVE_CONTRACT_COMPILATION
    static_assert( sizeof(long) == sizeof(int), "unexpected size difference" );
+   #endif
 
    /**
     *  Prints string
@@ -54,6 +56,7 @@ namespace eosio {
       printi(num);
    }
 
+   #ifndef EOSIO_NATIVE_CONTRACT_COMPILATION
    inline void print( long num ) {
       printi(num);
    }
@@ -66,6 +69,7 @@ namespace eosio {
    inline void print( unsigned int num ) {
       printi(num);
    }
+   #endif
 
    /**
     * Prints uint128 struct as 128 bit unsigned integer
