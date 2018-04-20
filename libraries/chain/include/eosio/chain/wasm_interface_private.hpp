@@ -153,13 +153,20 @@ extern "C" RETURN NAME PARAM_LIST { \
 //                a function with extern "C" binding with the same name as the intrinsic. It can either be
 //                left empty (and no native intrinsic function will be defined) or passed three parameters:
 //                   RETURN      native return value of the intrinsic
-//                   PARAM_LIST  Parentheses-enclosed argument list used for the function definition
-//                   ARGS        Parentheses-enclosed argument list used for passing parameters to the api's member function.
-//    NAME        name of the intrinsic function (defaults to METHOD)
-//    SIG         signature of the api's member function named METHOD
+//                   PARAM_LIST  Paren-enclosed argument list used for the function definition
+//                   ARGS        Paren-enclosed argument list used for passing parameters to the api's member function.
+//    NAME        optional name of the intrinsic function (defaults to METHOD)
+//    SIG         optional signature of the api's member function named METHOD (defaults to WASM_SIG)
 //
-// Examples:
-//    TODO: add some examples
+// Example:
+//    REGISTER_INTRINSICS(system_api,
+//       (abort,  void(), () ) // Native intrinsic not defined; system-defined abort() will be used
+//       (eosio_assert, void(int, int), (void, (bool condition, null_terminated_ptr str), (condition, str)))
+//       (eosio_exit,   void(int ),     (void, (int32_t code), (code)))
+//    );
+//    This macro call defines three intrinsics bound to the system_api class. abort passes an empty
+//    NATIVE_INFO meaning no native-debugging intrinsic function is defined. 
+
 #define REGISTER_INTRINSICS(CLS, MEMBERS)\
    BOOST_PP_SEQ_FOR_EACH(_REGISTER_INTRINSIC, CLS, _WRAPPED_SEQ(MEMBERS))
 

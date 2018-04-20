@@ -1152,7 +1152,7 @@ class context_free_transaction_api : public context_aware_api {
          return context.get_action( type, index, buffer, buffer_size );
       }
 
-      void check_auth( array_ptr<char> trx_data, size_t trx_size, array_ptr<char> perm_data, size_t perm_size ) {
+      void check_auth( array_ptr<const char> trx_data, size_t trx_size, array_ptr<const char> perm_data, size_t perm_size ) {
          transaction trx = fc::raw::unpack<transaction>( trx_data, trx_size );
          vector<permission_level> perm = fc::raw::unpack<vector<permission_level>>( perm_data, perm_size );
          return context.check_auth( trx, perm );
@@ -1617,7 +1617,7 @@ REGISTER_INTRINSICS(string_api,
 );
 
 REGISTER_INTRINSICS(system_api,
-   (abort,  void(), () ) // Native intrinsic not defined; system abort() will be used
+   (abort,        void(),         () ) // Native intrinsic not defined; system abort() will be used
    (eosio_assert, void(int, int), (void, (bool condition, null_terminated_ptr str), (condition, str)))
    (eosio_exit,   void(int ),     (void, (int32_t code), (code)))
    (now,          int(),          (uint32_t, (), ().sec_since_epoch()))
@@ -1663,7 +1663,7 @@ REGISTER_INTRINSICS(context_free_transaction_api,
    (tapos_block_num,    int(),                    (int, (), ()))
    (get_action,         int(int, int, int, int),  (int, (uint32_t type, uint32_t index, char* buffer, size_t length), (type, index, array_ptr<char>(buffer), length)))
    (check_auth,         void(int, int, int, int), (void, (const char *trans, size_t size, const char* permissions, size_t psize),
-                                                   (array_ptr<char>((char*)trans), size, array_ptr<char>((char*)permissions), psize)))
+                                                   (array_ptr<const char>(trans), size, array_ptr<const char>(permissions), psize)))
 );
 
 REGISTER_INTRINSICS(transaction_api,
